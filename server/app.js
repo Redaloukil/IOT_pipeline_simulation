@@ -1,20 +1,33 @@
 const express = require('express');
 
-const { dbConnection } = require('./helpers/db')
+const { databaseConnect, databaseConnectOptions } = require('./helpers/db')
 const { config } = require('./config');
 const { logger } = require('./helpers/logger');
 const sensorsRoutes = require('./routes/sensors');
-const bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
 
 const app = express();
 
-dbConnection
-    .then(() => {
-        logger.info("connected to the database")
-    }).catch(() => {
-        logger.error("error while connecting to database")
-    })
+const {
+    MONGO_USERNAME,
+    MONGO_PASSWORD,
+    MONGO_HOSTNAME,
+    MONGO_PORT,
+    MONGO_DB
+  } = process.env;
+
+mongoose.connect(`mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/db?authSource=admin`, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+})
+.then(() => {
+    logger.info("connected to the database")
+}).catch((err) => {
+    logger.error("error while connecting to database");
+    console.error(err);
+})
+
+    
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,8 +35,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('', sensorsRoutes);
 
 
-const server = app.listen(3000,() => {
-    logger.info('serve listening to the port 3000');
+const server = app.listen(8080,() => {
+    logger.info('serve listening to the port 8080');
 });
 
 

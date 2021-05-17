@@ -1,9 +1,9 @@
 const {Sensor} = require('../models/sensor');
 
 const sensorsService = {
-    getSensors : async () => {
+    getSensors : () => {
         try {
-            const sensors = await Sensors.find();
+            const sensors = Sensors.find();
             return sensors
         } catch(e){
             return null;

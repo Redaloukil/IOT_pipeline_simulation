@@ -2,7 +2,7 @@ const { logger } = require('../helpers/logger');
 const sensorsService = require('../services/sensors'); 
 
 const sensorsController = {
-    getSensors :  (req,res,next) => {
+    getSensors : (req,res,next) => {
         const sensors = sensorsService.getSensors();
         if(sensors) {
             return res.status(200).json(sensors);

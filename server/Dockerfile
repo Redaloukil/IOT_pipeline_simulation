@@ -1,14 +1,17 @@
+FROM node:10-alpine
 
-FROM node:8.11.1-alpine
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-LABEL maintainer="robertoachar@gmail.com"
+WORKDIR /home/node/app
 
-WORKDIR /usr/src/app
+COPY package*.json ./
 
-VOLUME [ "/usr/src/app" ]
+USER node
 
-RUN npm install -g nodemon
+RUN npm install
 
-EXPOSE 3000
+COPY --chown=node:node . .
 
-CMD [ "nodemon", "-L", "src/index.js" ]
+EXPOSE 8080
+
+CMD [ "node", "app.js" ]
