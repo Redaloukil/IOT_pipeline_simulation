@@ -2,22 +2,23 @@ const { logger } = require('../helpers/logger');
 const sensorsService = require('../services/sensors'); 
 
 const sensorsController = {
-    getSensors : (req,res,next) => {
-        const sensors = sensorsService.getSensors();
+    getSensors : async (req,res) => {
+        const sensors = await sensorsService.getSensors();
         if(sensors) {
-            return res.status(200).json(sensors);
+            return res.status(200).send(sensors);
         }
-        return res.status(400).json('ressources not found')
+        return res.status(400).send('ressources not found')
         
     },
-    createSensor : async (req,res,next) => {  
-        const sensor = await sensorsService.createSensor(sensor);
+    createSensor : async (req,res) => { 
+        const {name} = req.body
+        const sensor = await sensorsService.createSensor({name});
         if (sensor){
-            return res.status(200).json(req.body);
+            return res.status(201).send(sensor);
         }
-        return res.status(401).json({message:'Error while creating this ressource'});
+        return res.status(401).send({message:'Error while creating this ressource'});
     },
-    updateSensor: (req,res,next) => {
+    updateSensor: (req,res) => {
         // todo  
     },
     deleteSensor:(req,res,next) => {

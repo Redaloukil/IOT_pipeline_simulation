@@ -25,10 +25,22 @@ services:
     command: ./wait_for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
 
   db:
-    image: mongo:4.1.8-xenial
+    image: ${IMAGE_NAME}
     container_name: db
     restart: unless-stopped
     env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+  test_db:
+    image: ${IMAGE_NAME}
+    container_name: test_db
+    restart: unless-stopped
+    env_file: test.env
     environment:
       - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD

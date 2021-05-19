@@ -31,9 +31,12 @@ mongoose.connect(`mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use('', sensorsRoutes);
 
+//health shake route
+app.get("/", (req, res) => {
+    res.json({ message: "Application Interface for sensors." });
+  });
 
 const server = app.listen(8080,() => {
     logger.info('serve listening to the port 8080');
