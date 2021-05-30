@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
+const USER_DOCUMENT = 'User';
+
 const userSchema = new mongoose.Schema({
     username: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'Sensor',
+        type:String,
         required:true,
         unique:true,
     },
@@ -13,9 +14,16 @@ const userSchema = new mongoose.Schema({
     },
 }, {timestamps:true});
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model(USER_DOCUMENT, userSchema);
 
+
+User.on('save', async (user) => {
+    const { password } = user;
+    user.password = "hashed_password_" + password;
+    return user;
+})
 
 module.exports = {
     User,
+    USER_DOCUMENT,
 }

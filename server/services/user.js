@@ -3,11 +3,19 @@ const {User} = require('../models/user');
 
 
 module.exports = {
+    getAllUsers: async() => {
+        try {
+            const users = await User.find({});
+            return users
+        } catch(e) {
+            return null;
+        }
+    },
     getUserById: async (id)=> {
         try {
             const user = await User.find({_id:id});
         } catch(e) {
-            return null
+            return null;
         }
     },
     createUser : async ({username, password}) => {
@@ -25,8 +33,8 @@ module.exports = {
     },
     loginUser: async ({username, password}) => {
         try {
-            const user = await User.find({username});
-            if(user && user.password){
+            const user = await User.findOne({username});
+            if(user && user.password === password){
                 return user;
             }
             return null
