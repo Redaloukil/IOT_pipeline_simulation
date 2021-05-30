@@ -1,4 +1,7 @@
 const userSevice = require('../services/user');
+const userAccess = require('../services/user-access');
+const userAccessService = require('../services/user-access');
+
 
 module.exports = {
     getAllUsers: async (req, res, next)=> {
@@ -27,9 +30,16 @@ module.exports = {
     loginUser : async (req, res, next) => {
         const {username, password} = req.body;
         const user = await userSevice.loginUser({username,password});
-        if(user){
-            return res.status(200).send(user);
+        if (!user) {
+            return res.status(401).send({message:"Could not login with these credentials"});
+
         }
-        return res.status(401).send({message:"Could not login with these credentials"});
-    }
+        const token = userAccessService.sign(user);
+        const response = user.toObject();
+        response.token = token;
+                
+        return res.status(201).send(response);
+    },
+
+
 }

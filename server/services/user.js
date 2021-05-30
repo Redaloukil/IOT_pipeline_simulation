@@ -1,7 +1,5 @@
 const {User} = require('../models/user');
 
-
-
 module.exports = {
     getAllUsers: async() => {
         try {
@@ -35,7 +33,7 @@ module.exports = {
         try {
             const user = await User.findOne({username});
             if(user && user.password === password){
-                return user;
+                return user
             }
             return null
         } catch(e) {

@@ -5,7 +5,7 @@ const FRAMEWORK_DOCUMENT = 'Framework'
 
 const frameworkSchema = new mongoose.Schema({
     admin:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:USER_DOCUMENT,
         required:true,
     },

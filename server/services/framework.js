@@ -1,21 +1,28 @@
-const { Framework } = require("../models/framework")
+const { Framework } = require("../models/framework");
 
 
 module.exports = {
     createFrameworkByAdmin: async (framework) => {
-      let framework = new Framework(framework);
-      framework = await framework.save();
-      if(framework){
-        return framework;
-      }
-      return null
-
-    },
-    getFrameworkByID:(id) => {
-        const framework = Framework.findOne({_id:id});
-        if(framework) {
-            return framework;
+        try {
+            let createdFramework = new Framework(framework);
+            createdFramework = await framework.save();
+            if(createdFramework){
+                return createdFramework;       
+            }
+            return null;
+        } catch {
+            return null;
         }
-        return null;
+    },
+    getFrameworkByID: async (id) => {
+        try {
+            const framework = await Framework.findOne({_id:id});
+            if(framework) {
+                return framework;
+            }
+            return null;
+        } catch {
+            return null;
+        }
     },
 }

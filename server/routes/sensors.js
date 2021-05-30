@@ -8,7 +8,7 @@ sensorsRoutes
   .post(sensorsController.createSensor)
   .get(sensorsController.getSensors);
 
-  // sensorsRoutes.get('/sensors/:id')
+  //  sensorsRoutes.get('/sensors/:id')
   //   .post(sensorsRoutes.)
 
 

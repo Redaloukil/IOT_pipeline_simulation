@@ -23,7 +23,7 @@ const eventsService = {
             const event =  await createEvent.save()
             return event;
         } catch(e) {
-            throw(e);
+            return null;
         }
     }
 }
