@@ -6,8 +6,13 @@ const sensorsRoutes = express.Router();
 
 sensorsRoutes
   .route('/sensors')
-  .post(sensorsController.createSensor)
-  .get(isAuthenticated, sensorsController.getSensors);
+  .post(isAuthenticated, sensorsController.createSensor)
+  .get(isAuthenticated, sensorsController.getSensors)
+  
+sensorsRoutes
+  .route('/sensors/:id')
+  .get(isAuthenticated, sensorsController.getSensorById)
+  .put(isAuthenticated, sensorsController.updateSensor)
 
 
 module.exports = sensorsRoutes;

@@ -19,7 +19,7 @@ Usage:
   -- COMMAND ARGS                     Execute command with args after the test finishes
 USAGE
   exit "$exitcode"
-}
+} 
 
 wait_for() {
   for i in `seq $TIMEOUT` ; do

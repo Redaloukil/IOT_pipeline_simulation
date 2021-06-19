@@ -11,7 +11,7 @@ const sensorsService = {
     },
     getSensorById: async (id) => {
         try {
-            const sensor = await Sensor({_id:id});
+            const sensor = await Sensor.findOne({_id:id});
             return sensor;  
         } catch(e){
             return null
@@ -24,7 +24,6 @@ const sensorsService = {
             return sensor
         }catch(e){
             new Error("Error encoutered when creating ressource");
-            console.log(e);
             return null 
         }
     },

@@ -17,11 +17,15 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model(USER_DOCUMENT, userSchema);
 
 
-User.on('save', async (user) => {
+User.on('create', async (user) => {
     const { password } = user;
     user.password = "hashed_password_" + password;
     return user;
 })
+
+
+
+
 
 module.exports = {
     User,
