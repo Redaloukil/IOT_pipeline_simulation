@@ -1,0 +1,15 @@
+<div>
+    <ng-container *ngIf="state?.loading">
+        loading
+    </ng-container>
+    <ng-container *ngIf="!state?.loading">
+        <ng-container>
+            Application has been loaded
+        </ng-container>
+        <ng-container *ngIf="state?.failed">
+            Application failed to load
+        </ng-container>
+    <router-outlet></router-outlet>
+    </ng-container>
+
+</div>

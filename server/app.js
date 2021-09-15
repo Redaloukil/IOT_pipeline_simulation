@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const { logger } = require('./helpers/logger');
 const sensorsRoutes = require('./routes/sensors');
 const eventsRoutes = require('./routes/events');
@@ -28,19 +30,25 @@ mongoose.connect(`mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME
 })
 
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
 
 app.use('', sensorsRoutes);
 app.use('', eventsRoutes);
 app.use('', userRoutes);
 app.use('', frameworkRoutes);
 
+app.disable('etag');
+
 
 //health shake route
 app.get("/", (req, res) => {
-    res.json({ message: "Application Interface for sensors." });
-    next();
+    res.status(200).json({ message: "Application Interface for sensors." });
+    res.end()
 });
 
 app.use((req,res,next) => {

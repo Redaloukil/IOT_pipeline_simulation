@@ -23,10 +23,6 @@ User.on('create', async (user) => {
     return user;
 })
 
-
-
-
-
 module.exports = {
     User,
     USER_DOCUMENT,

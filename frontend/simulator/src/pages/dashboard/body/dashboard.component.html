@@ -1,0 +1,11 @@
+<h1>dashboard</h1>
+<button (click)="logout()">Logout</button>
+<ng-container *ngIf="!loading">
+    <ng-container *ngIf="sensors">
+        <ng-container *ngIf="sensors.length > 0">
+            <ng-container *ngFor="let sensor of sensors">
+                <app-sensor [sensor]="sensor" (reload)="relaod()"></app-sensor>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>

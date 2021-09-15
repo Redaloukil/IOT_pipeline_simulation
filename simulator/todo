@@ -1,0 +1,11 @@
+this file describes the simulation funtionalities, simuator execution will be devided into two types of executions 
+1 - main thread execution : a function that subscribes into the MQ channel and get message
+2 - receiving message trigger a method which reads the json object and  
+2 - seperate thread execution : a function that will simulate a iot device sending data
+
+
+
+1 - class named Simulator 
+    simulator has: 
+    - name 
+    - devices // saves the devices that are running on seperate 

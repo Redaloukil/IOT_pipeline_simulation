@@ -1,18 +1,18 @@
 const express = require('express');
+const {authentication} = require('../validators/authentication');
 
 const sensorsController = require('../controllers/sensors');
-const { isAuthenticated } = require('../middlewares/user-access');
 const sensorsRoutes = express.Router();
 
 sensorsRoutes
   .route('/sensors')
-  .post(isAuthenticated, sensorsController.createSensor)
-  .get(isAuthenticated, sensorsController.getSensors)
+  .post(authentication, sensorsController.createSensor)
+  .get(authentication,sensorsController.getSensors)
   
 sensorsRoutes
   .route('/sensors/:id')
-  .get(isAuthenticated, sensorsController.getSensorById)
-  .put(isAuthenticated, sensorsController.updateSensor)
+  .get(authentication, sensorsController.getSensorById)
+  .put(authentication, sensorsController.updateSensor)
 
 
 module.exports = sensorsRoutes;

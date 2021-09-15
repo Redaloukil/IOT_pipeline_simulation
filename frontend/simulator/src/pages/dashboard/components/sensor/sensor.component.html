@@ -1,0 +1,7 @@
+<div>
+    <p><strong>Name :</strong> {{sensor?.name}}</p>
+    <p><strong>Status :</strong> {{sensor?.online ? "active" : "inactive"}}</p>
+    <button (click)="changeStatus()">
+        Change status
+    </button>
+</div>

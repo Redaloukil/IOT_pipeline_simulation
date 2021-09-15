@@ -44,6 +44,19 @@ services:
       - app-network
     hostname: db
 
+  angular-ui:
+    build:
+      context: ../frontend/simulator
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    container_name: angular-ui
+    networks:
+      - app-network
+    volumes:
+      - ../frontend/simulator:/usr/src/app/simulator
+      - ../frontend/simulator/node_modules:/usr/src/app/simulator/node_modules
+
   message_queue:
     image: rabbitmq:3-management
     container_name: message_queue

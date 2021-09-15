@@ -10,7 +10,7 @@ const SensorSchema = new Schema({
         defaut:'sensor',
     },
     online: {
-        type:String,
+        type:Boolean,
         default:false,
         required:true,
     },
