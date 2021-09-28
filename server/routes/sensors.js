@@ -13,6 +13,7 @@ sensorsRoutes
   .route('/sensors/:id')
   .get(authentication, sensorsController.getSensorById)
   .put(authentication, sensorsController.updateSensor)
+  .delete(authentication, sensorsController.deleteSensor)
 
 
 module.exports = sensorsRoutes;

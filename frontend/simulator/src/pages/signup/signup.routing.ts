@@ -5,7 +5,7 @@ import { SignupComponent } from "./body/signup.component";
 const routers: Route[] = [
     {
         path:"",
-        component:SignupComponent
+        component:SignupComponent,
     }
 ]
 

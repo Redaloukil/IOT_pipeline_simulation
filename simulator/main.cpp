@@ -13,7 +13,6 @@ int main()
     MyHandler handler(loop);
 
     // make a connection
-
     AMQP::TcpConnection connection(&handler, AMQP::Address("amqp://guest:guest@localhost/"));
 
     // we need a channel too
@@ -23,7 +22,6 @@ int main()
     std::string queue_name = "sensor_control";
 
     // create a simulator object
-
     Simulator *simulator = new Simulator();
 
     // channel consuming
@@ -47,13 +45,21 @@ int main()
 
                        // getting the data event
                        const std::string id = root["_id"].asString();
-                       const std::string online = root["online"].asString();
+                       const std::string status = root["online"].asString();
 
-                       cout << root.asString() << endl;
-                       //    Device *device = new Device(id, online);
-                       //    simulator->getDevice().insert({device->getId(), *device});
+                       bool online;
+                       if (status == "true")
+                       {
+                           online = true;
+                       }
+                       else
+                       {
+                           online = false;
+                       }
 
-                       //    cout << simulator->getDevice().size() << endl;
+                       Device *device = new Device(id, online);
+
+                       simulator->setDevice(*device);
 
                        channel.ack(deliveryTag);
                    })
@@ -61,7 +67,7 @@ int main()
         .onSuccess([](const std::string &consumertag)
                    { std::cout << "consume operation started " << consumertag << std::endl; })
         .onError([](const std::string message)
-                 { std::cout << "consume operation started" << std::endl; });
+                 { std::cout << "consume operation stopped" << std::endl; });
 
     // run the loop
     uv_run(loop, UV_RUN_DEFAULT);

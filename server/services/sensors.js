@@ -27,6 +27,16 @@ const sensorsService = {
             return null 
         }
     },
+    deleteSensoryId:async (id) => {
+        try {
+            await Sensor.deleteOne({_id:id});
+            return true;
+        } catch(e) {
+            new Error("Error encountered while deleting the ressource");
+            return false;
+        }
+        
+    }
 }
 
 module.exports = sensorsService;

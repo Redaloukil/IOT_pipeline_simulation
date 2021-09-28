@@ -1,18 +1,27 @@
 <div>
     <h1>Signup</h1>
     <form [formGroup]="signupForm">
-        <mat-form-field [appearance]="'outline'">
+        <div>
             <label>Username</label>
-            <input matInput formControlName="username" type="text">
-        </mat-form-field>
-        <mat-form-field [appearance]="'outline'">
+            <mat-form-field [appearance]="'outline'">
+                <input matInput formControlName="username" type="text">
+            </mat-form-field>
+        </div>
+        
+        <div>
             <label>Password</label>
-            <input matInput formControlName="password" type="text">
-        </mat-form-field>
-        <mat-form-field [appearance]="'outline'">
+            <mat-form-field [appearance]="'outline'">
+                <input matInput formControlName="password" type="text">
+            </mat-form-field>
+        </div>
+        
+        <div>
             <label>Confirm password</label>
-            <input matInput formControlName="confirmPassword" type="text">
-        </mat-form-field>
+            <mat-form-field [appearance]="'outline'">
+                <input matInput formControlName="confirmPassword" type="text">
+            </mat-form-field>
+        </div>
+        
         <div>
             <button mat-flat-button color="accent" type="button" (click)="submit()" [disabled]="!signupForm.valid">Submit</button>
         </div>

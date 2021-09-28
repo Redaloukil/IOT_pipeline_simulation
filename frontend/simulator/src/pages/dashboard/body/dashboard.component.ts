@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/services/auth.service";
-import { DashboardState } from "src/state/types/state.model";
 import { DashboardService } from "../../../services/dashboard.service";
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CreateSensorDialogComponent } from "../components/create-sensor-dialog/create-sensor-dialog.component";
 
 @Component({
     selector:'app-dashboard',
@@ -17,7 +18,7 @@ export class DashboardComponent implements OnInit{
     loading = false;
     sensors:any= [];
 
-    constructor(private dashboardService:DashboardService, private authService:AuthService, private router:Router){
+    constructor(private dashboardService:DashboardService, private authService:AuthService, private router:Router, private dialog: MatDialog){
         //
     }
 
@@ -47,8 +48,14 @@ export class DashboardComponent implements OnInit{
             });
     }
 
-    logout() {
-        this.authService.logout();
-        this.router.navigate(['/login']);
-    }
+   createSensor(){
+        this.dialog.open(CreateSensorDialogComponent,{
+            width:"60vw",
+        })
+        .afterClosed()
+        .toPromise()
+        .then(()=> {
+            this.relaod();
+        })
+   }
 }

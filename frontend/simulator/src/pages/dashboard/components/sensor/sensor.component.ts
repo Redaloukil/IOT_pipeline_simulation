@@ -9,31 +9,38 @@ import { DashboardService } from "src/services/dashboard.service";
 export class SensorComponent implements OnInit{
     @Input() sensor:{_id:string,name:string,status:boolean,online:boolean} | null = null;
     @Output() reload:EventEmitter<void> = new EventEmitter();
+
     constructor(private dashboardService:DashboardService){
         //
     }
 
     ngOnInit(): void{
-        console.log(this.sensor)
+        //
     }
 
     changeStatus(){
-        console.log({
-            _id:this.sensor?._id,
-            online:!(!!this.sensor?.online)
-        })
         this.dashboardService.setSensorParams({
             _id:this.sensor?._id,
             online:!(!!this.sensor?.online)
         })
         .toPromise()
         .then((sensor) => {
-            console.log("result ," ,sensor)
             this.sensor = sensor as {_id:string,name:string,status:boolean;online:boolean};
             this.reload.emit();
         })
         .catch(() => {
             console.error("failed to change sensor status");
+        });
+    }
+
+    deleteSensor(){
+        this.dashboardService.deleteSensor({id:this.sensor?._id})
+        .toPromise()
+        .then((sensor) => {
+            this.reload.emit();
         })
+        .catch(() => {
+            console.error("failed to delete a sensor");
+        });
     }
 }   

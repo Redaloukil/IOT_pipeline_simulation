@@ -11,10 +11,12 @@ import { CustomSerializer } from './router-serializer.utils';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {appReducer} from '../state/reducers/app.reducer';
-import { dashboardReducer } from 'src/state/reducers/dashboard.reducer';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorInterceptor } from 'src/helpers/http-exception';
 import { JwtInterceptor } from 'src/helpers/jwt-injector';
+
+import { CommonModule } from '@angular/common';
+import { NavbarModule } from './components/navbar/navbar.module';
 
 @NgModule({
   declarations: [
@@ -22,24 +24,27 @@ import { JwtInterceptor } from 'src/helpers/jwt-injector';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    NavbarModule,
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot({
       app:appReducer
     }),
+    BrowserAnimationsModule,
+    // store currently not used 
     StoreDevtoolsModule.instrument({
-            maxAge: 25, // Retains last 25 states
-            logOnly: environment.production, // Restrict extension to log-only mode
-            autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+            maxAge: 25, 
+            logOnly: environment.production,
+            autoPause: true, 
     }),
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,
     }),
-    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide:  HTTP_INTERCEPTORS , useClass:JwtInterceptor, multi:true },
+    { provide: HTTP_INTERCEPTORS , useClass:JwtInterceptor, multi:true },
   ],
   bootstrap: [AppComponent]
 })

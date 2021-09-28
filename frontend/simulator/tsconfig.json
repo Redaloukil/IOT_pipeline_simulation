@@ -14,6 +14,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "paths": {
+      "sensor-simulator": [
+        "dist/sensor-simulator/sensor-simulator",
+        "dist/sensor-simulator"
+      ]
+    },
     "target": "es2015",
     "module": "es2020",
     "lib": [

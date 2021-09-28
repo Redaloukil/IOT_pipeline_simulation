@@ -1,20 +1,31 @@
-<div>
+<mat-card>
+    <mat-card-content>
     <h1>Login</h1>
     <form [formGroup]="loginForm">
+        <mat-error>
+            The username and password were not recognized
+        </mat-error>
         <div>
             <label>Username</label>
             <mat-form-field [appearance]="'outline'">
                 <input matInput formControlName="username" type="text">
             </mat-form-field>
+            <mat-error>
+                Please provide a valid email address
+            </mat-error>
         </div>
         <div>
             <label>Password</label>
             <mat-form-field [appearance]="'outline'">
                 <input matInput formControlName="password" type="password">
             </mat-form-field>
+            <mat-error>
+                Please provide a valid email address
+            </mat-error>
         </div>
         <div>
             <button mat-flat-button color="accent" type="button" (click)="submit()">Submit</button>
         </div>
     </form>
-</div>
+    </mat-card-content>
+</mat-card>

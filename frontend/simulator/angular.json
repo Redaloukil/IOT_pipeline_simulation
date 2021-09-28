@@ -30,6 +30,11 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./styles"
+              ]
+            },
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
@@ -124,6 +129,46 @@
             "production": {
               "devServerTarget": "simulator:serve:production"
             }
+          }
+        }
+      }
+    },
+    "sensor-simulator": {
+      "projectType": "library",
+      "root": "projects/sensor-simulator",
+      "sourceRoot": "projects/sensor-simulator/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/sensor-simulator/tsconfig.lib.json",
+            "project": "projects/sensor-simulator/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/sensor-simulator/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/sensor-simulator/src/test.ts",
+            "tsConfig": "projects/sensor-simulator/tsconfig.spec.json",
+            "karmaConfig": "projects/sensor-simulator/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/sensor-simulator/tsconfig.lib.json",
+              "projects/sensor-simulator/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }

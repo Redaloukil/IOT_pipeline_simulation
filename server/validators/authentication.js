@@ -7,7 +7,7 @@ module.exports = {
             const token = authHeader.split(' ')[1];
             jwt.verify(token, "hello world", (err, user) => {
                 if (err) {
-                    return res.status(201).send({message:"unabled to authenticate"});
+                    return res.status(401).send({message:"unabled to authenticate"});
                 }
                 req.user = user;
                 next();

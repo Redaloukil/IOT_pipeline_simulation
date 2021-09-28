@@ -1,5 +1,5 @@
 const sensorsService = require('../services/sensors'); 
-const {channel} = require('../helpers/message_queue');
+const { channel } = require('../helpers/message_queue');
 const { QUEUE_NAME } = require('../helpers/constants');
 
 const sensorsController = {
@@ -19,6 +19,7 @@ const sensorsController = {
     },
     createSensor : async (req,res) => { 
         const {name} = req.body
+        console.log(name);
         const sensor = await sensorsService.createSensor({name});
         if (sensor){
             return res.status(201).send(sensor);
@@ -27,7 +28,7 @@ const sensorsController = {
     },
     updateSensor: async (req,res) => {
         const updatedSensor = req.body;
-        console.log(updatedSensor)
+        console.log(updatedSensor);
         const sensor = await sensorsService.getSensorById(req.params.id);
         if (updatedSensor) {
             sensor.online = updatedSensor['online'] || sensor.online;
@@ -46,7 +47,14 @@ const sensorsController = {
         }  
         return res.status(401).send({message:'Error while updating the ressource'});
     },
+    deleteSensor: async (req,res) => {
+        const deleted = await sensorsService.deleteSensoryId(req.params.id);
+        console.log(req.params.id);
+        if(deleted) {
+            return res.status(204).send({message:"Ressouce succefully deleted"});
+        }
+        return res.status(409).send(sensor, {message:"Something went wrong while deleting the ressource"});
+    }
 }
-
 
 module.exports = sensorsController;

@@ -10,7 +10,6 @@ using namespace std;
 class Event
 {
 private:
-    
     string reference;
 
 public:

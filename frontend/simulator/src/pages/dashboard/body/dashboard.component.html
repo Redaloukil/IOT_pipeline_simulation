@@ -1,11 +1,16 @@
 <h1>dashboard</h1>
-<button (click)="logout()">Logout</button>
+
+
+<button mat-flat-button color="primary" (click)="createSensor()">Create a sesnor</button>
 <ng-container *ngIf="!loading">
     <ng-container *ngIf="sensors">
-        <ng-container *ngIf="sensors.length > 0">
+        <ng-container *ngIf="sensors.length > 0; else noSensors">
             <ng-container *ngFor="let sensor of sensors">
                 <app-sensor [sensor]="sensor" (reload)="relaod()"></app-sensor>
             </ng-container>
         </ng-container>
+        <ng-template #noSensors>
+            no sensors available
+        </ng-template>
     </ng-container>
 </ng-container>
