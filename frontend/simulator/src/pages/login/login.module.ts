@@ -6,6 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { LoginRouterModule } from "./login.routing";
 import { MatInputModule } from "@angular/material/input";
 import { SharedModule } from "src/shared/shared.module";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
     declarations:[
@@ -13,6 +14,7 @@ import { SharedModule } from "src/shared/shared.module";
     ],
     imports:[
         CommonModule,
+        RouterModule,
         SharedModule,
         LoginRouterModule,
         ReactiveFormsModule,

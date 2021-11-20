@@ -3,82 +3,98 @@
 #include <amqpcpp.h>
 #include <amqpcpp/libuv.h>
 
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
-#include <cstdlib>
-
-/*
-    class Device
-
-    represents a simulator device, which is an entity that will generate random events.
-/**/
 using namespace std;
-
-void *generateData(void *);
 
 class Device
 {
 private:
     std::string id;
     bool online;
-    pthread_t runner;
-
 public:
-    std::string getId()
-    {
-        return this->id;
-    };
+    std::string getId();
 
-    const void setId(std::string id)
-    {
-        this->id = id;
-    }
-    bool getOnline()
-    {
-        return this->online;
-    };
-    void setOnline(bool online)
-    {
-        this->online = online;
-    };
+    const void setId(std::string id);
 
-    void stopRunner()
-    {
-        std::cout << "stop the runner for device " << this->getId() << endl;
-        pthread_join(this->runner, NULL);
-    }
+    const void setOnline(bool status);
 
-    void startRunner()
-    {
-        std::string device_id = this->getId();
-        char *id[device_id.length() + 1];
+    bool getOnline();
 
-        strcpy(*id, device_id.c_str());
-
-        std::cout << "start the runner for device " << this->getId() << endl;
-        pthread_create(&this->runner, NULL, generateData, (void *)id);
-    }
-
-    Device(std::string id, bool online)
-    {
-        this->online = online;
-        this->id = id;
-    }
+    Device(std::string id, bool online);
 };
 
-void *generateData(void *device_id)
-{
 
-    while (true)
-    {
+// void *generateData(void *);
 
-        int result = 1 + (rand() % 100);
-        std::cout << "value " << result << "emitted by the device " << device_id << endl;
-        sleep(2);
-    }
+// class Device
+// {
+// private:
+//     std::string id;
+//     bool online;
+//     pthread_t runner;
 
-    return nullptr;
-}
+// public:
+//     std::string getId()
+//     {
+//         return this->id;
+//     };
+
+//     const void setId(std::string id)
+//     {
+//         this->id = id;
+//     }
+//     bool getOnline()
+//     {
+//         return this->online;
+//     };
+//     void setOnline(bool online)
+//     {
+//         this->online = online;
+//     };
+
+//     void stopRunner()
+//     {
+//         std::cout << "stop the runner for device " << this->getId() << endl;
+//         pthread_join(this->runner, NULL);
+//     }
+
+//     void startRunner()
+//     {
+//         std::string device_id = this->getId();
+//         char *id;
+
+//         strcpy(id, device_id.c_str());
+
+//         cout << id << endl;
+
+//         std::cout << "start the runner for device " << this->getId() << " " << endl;
+//         pthread_create(&this->runner, NULL, generateData, (void *)id);
+//     }
+
+//     bool queueOnConnect()
+//     {
+//         return false;
+//     }
+
+
+//     Device(std::string id, bool online)
+//     {
+//         this->online = online;
+//         this->id = id;
+//     }
+
+//     ~Device()
+//     {
+//         //
+//     }
+// };
+
+// void *generateData(void *device_id)
+// {
+//     while (true)
+//     {
+//         int result = 1 + (rand() % 100);
+//         std::cout << "value " << result << "emitted by the device " << (char *)device_id << endl;
+//         sleep(2);
+//     }
+//     return nullptr;
+// }

@@ -1,62 +1,40 @@
 #include <bits/stdc++.h>
-#include <vector>
-#include <algorithm>
 #include <pthread.h>
-#include "device.h"
+#include "device.cpp"
+#include "simulator.h"
 #include "runner.h"
 
 using namespace std;
 
-class Simulator
+
+Simulator::getDevices()
 {
-private:
-    vector<Device> devices;
+    return this->devices;
+}
 
-public:
-    vector<Device> getDevices()
-    {
-        return this->devices;
-    }
-
-    void setDevice(Device device)
-    {
-        this->devices.push_back(device);
-        device.startRunner();
-    }
-
-    // void addDevice(Device device)
-    // {
-    //     if (find(this->devices.begin(), this->devices.end(), device) != this->devices.end())
-    //     {
-    //         std::cout << "device already exists in device" << endl;
-
-    //         this->devices.erase(find(this->devices.begin(), this->devices.end(), device));
-    //         device.stopRunner();
-    //     }
-    //     else
-    //     {
-    //         std::cout << "device already exists in device" << endl;
-
-    //         this->devices.push_back(device);
-    //         device.startRunner();
-    //     }
-    // }
-
-    // Device getDevice(Device device)
-    // {
-    //     if (find(this->devices.begin(), this->devices.end(), device) != this->devices.end())
-    //     {
-    //         return this->devices.data(find(this->devices.begin(), this->devices.end(), device));
-    //     }
-    // }
-
-    void setDevices(vector<Device> devices)
+Simulator::setDevice(map<string,Device> devices)
     {
         this->devices = devices;
     }
 
-    Simulator()
+Simulator::addDevice(string id, Device device)
     {
-        this->devices = {};
+        auto itr = this->devices.find(id);
+        if (itr == this->devices.end())
+        {
+            this->devices.insert({id, device});
+        }
+        else
+        {
+            std::cout << "device already exists in device" << endl;
+        }
     }
-};
+
+Simulator::getDevice(string id) {
+        auto itr = this->devices.find(id);
+        if (itr != this->devices.end())
+        {
+            return itr->second;
+        }
+}
+

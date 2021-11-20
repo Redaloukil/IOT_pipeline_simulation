@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit{
         this.authService.login({username:this.loginForm.get('username')?.value,password:this.loginForm.get('password')?.value})
             .toPromise()
             .then((res) => {
+                this.router.navigateByUrl("dashboard");
                 localStorage.setItem('currentUser', JSON.stringify(res));
-                this.router.navigate(['dashboard']);
             })
             .catch((err) => {
                 console.error(err);

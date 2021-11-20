@@ -6,25 +6,18 @@
 
 int main()
 {
-    // access to the event loop
     auto *loop = uv_default_loop();
 
-    // handler for libev
     MyHandler handler(loop);
 
-    // make a connection
     AMQP::TcpConnection connection(&handler, AMQP::Address("amqp://guest:guest@localhost/"));
 
-    // we need a channel too
     AMQP::TcpChannel channel(&connection);
 
-    // create a temporary queue
     std::string queue_name = "sensor_control";
 
-    // create a simulator object
     Simulator *simulator = new Simulator();
 
-    // channel consuming
     channel.consume(queue_name)
         .onMessage([&channel, &simulator](const AMQP::Message &message, uint64_t deliveryTag, bool redelivered)
                    {
@@ -34,6 +27,7 @@ int main()
                        std::cout << messageJson << std::endl;
                        Json::Value root;
                        Json::Reader reader;
+
                        try
                        {
                            reader.parse(messageJson, root);

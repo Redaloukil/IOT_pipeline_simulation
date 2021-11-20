@@ -5,7 +5,7 @@
             <mat-icon>home</mat-icon>
         </button>
     </span>
-    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <div>
         <button mat-button *ngIf="!currentUser" routerLink="/login">
             <mat-icon>power_settings_new</mat-icon>
             Login
@@ -14,12 +14,15 @@
             <mat-icon>power_settings_new</mat-icon>
             Signup
         </button>
+        <button mat-button *ngIf="currentUser" routerLink="/dashboard">
+            Dashboard
+        </button>
         <button mat-button *ngIf="currentUser" routerLink="/logout" (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             Logout
         </button>
     </div>
-    <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+    <button mat-button [mat-menu-trigger-for]="menu" fxHide="false">
         <mat-icon>menu</mat-icon>
     </button>
 </mat-toolbar>

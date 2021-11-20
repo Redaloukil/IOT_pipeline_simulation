@@ -19,6 +19,7 @@ export class AuthService {
         if(localStorage.getItem('currentUser')) {
             this.user = JSON.parse(localStorage.getItem('currentUser') as string) as User; 
         }
+
     }
 
     getUser(){

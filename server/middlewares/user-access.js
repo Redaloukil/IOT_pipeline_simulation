@@ -10,7 +10,6 @@ module.exports = {
         const user = userAccess.verify(authorization);
         if(!user){
             return res.status(401).send({message:"you shoud be authenticated"});
-            
         }
 
         next();

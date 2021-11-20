@@ -21,6 +21,11 @@ private:
         std::cout << "error: " << message << std::endl;
     }
 
+    virtual void onHeartbeat(AMQP::TcpConnection *connection)
+    {
+        connection->heartbeat();
+    }
+
     /**
      *  Method that is called when the TCP connection ends up in a connected state
      *  @param  connection  The TCP connection

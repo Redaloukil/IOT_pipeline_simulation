@@ -18,11 +18,13 @@ export class NavbarComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.currentUser = this.authService.getUser()
+        this.currentUser = this.authService.getUser();
+        console.log("current user from navbar" ,this.currentUser);
     }
 
     logout(){
         this.authService.logout();
+        this.currentUser = this.authService.getUser();
         this.router.navigate(['/login']);
     }
 
