@@ -49,15 +49,15 @@ private:
         std::cout << "TCP connection established" << std::endl;
     }
 
-public:
-    /**
-     *  Constructor
-     *  @param  uv_loop
-     */
-    MyHandler(uv_loop_t *loop) : AMQP::LibUvHandler(loop)
-    {
-        /* */
-    }
+    public:
+        /**
+         *  Constructor
+         *  @param  uv_loop
+         */
+        MyHandler(uv_loop_t *loop) : AMQP::LibUvHandler(loop)
+        {
+            /* */
+        }
 
     /**
      *  Destructor

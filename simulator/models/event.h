@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "event.h"
+
 using namespace std;
 
 class Event
@@ -11,9 +11,9 @@ private:
 public:
     void setValue(int value);
     int getValue();
-    void setReference();
+    void setReference(string reference);
     string getReference();
-    Event(/* args */);
+    Event(int value,string reference);
     ~Event();
 };
 

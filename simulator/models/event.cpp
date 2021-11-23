@@ -1,19 +1,30 @@
 #include <bits/stdc++.h>
+#include "event.h"
+
 using namespace std;
+    void Event::setValue(int value) {
+        this->value = value;
+    };
 
-class Event
-{
-private:
-    string reference;
-    int value;
+    int Event::getValue() {
+        return this->value;
+    };
+        
+    void Event::setReference(string reference) {
+        this->reference = reference;
+    };
 
-public:
-    void setValue(int value);
-    int getValue();
-    void setReference();
-    string getReference();
-    Event(/* args */);
-    ~Event();
-};
+    string Event::getReference() {
+        return this->reference;
+    };
+
+    Event::Event(int value,string reference) {
+        this->value = value;
+        this->reference = reference;
+    };
+
+    Event::~Event(){
+        //
+    }
 
 

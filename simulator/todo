@@ -9,3 +9,4 @@ this file describes the simulation funtionalities, simuator execution will be de
     simulator has: 
     - name 
     - devices // saves the devices that are running on seperate 
+    - simulator // contains devices that are running 

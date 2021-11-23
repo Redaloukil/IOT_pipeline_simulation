@@ -1,8 +1,10 @@
 #include <amqpcpp.h>
 #include <amqpcpp/libuv.h>
-#include "./handler.cpp"
 #include <jsoncpp/json/json.h>
-#include "models/simulator.cpp"
+#include "models/simulator.h"
+#include "models/device.h"
+#include "handler.cpp"
+
 
 int main()
 {
@@ -21,10 +23,15 @@ int main()
     channel.consume(queue_name)
         .onMessage([&channel, &simulator](const AMQP::Message &message, uint64_t deliveryTag, bool redelivered)
                    {
+                       // get amqp message body  
                        std::string messageBody = message.body();
+                       // extract message json from body
                        const std::string messageJson = messageBody.substr(0, messageBody.find('}') + 1);
+                       // cout received message
                        std::cout << "message received" << std::endl;
+                       // cout message json 
                        std::cout << messageJson << std::endl;
+                       // root and reader
                        Json::Value root;
                        Json::Reader reader;
 
@@ -40,22 +47,8 @@ int main()
                        // getting the data event
                        const std::string id = root["_id"].asString();
                        const std::string status = root["online"].asString();
-
-                       bool online;
-                       if (status == "true")
-                       {
-                           online = true;
-                       }
-                       else
-                       {
-                           online = false;
-                       }
-
-                       Device *device = new Device(id, online);
-
-                       simulator->setDevice(*device);
-
-                       channel.ack(deliveryTag);
+                       
+                        channel.ack(deliveryTag);
                    })
         .onData([](const char *data, size_t size) {})
         .onSuccess([](const std::string &consumertag)
