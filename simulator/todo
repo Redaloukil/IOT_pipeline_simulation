@@ -10,3 +10,12 @@ this file describes the simulation funtionalities, simuator execution will be de
     - name 
     - devices // saves the devices that are running on seperate 
     - simulator // contains devices that are running 
+
+
+2 - service 
+    web application plays the role of command sender 
+    message broker plays the role of messenger 
+    command executor plays the role of executing command received from message broker 
+
+
+MessageInterpreter 

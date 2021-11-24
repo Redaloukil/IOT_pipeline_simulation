@@ -29,7 +29,7 @@ int main()
                        const std::string messageJson = messageBody.substr(0, messageBody.find('}') + 1);
                        // cout received message
                        std::cout << "message received" << std::endl;
-                       // cout message json 
+                       // cout message json
                        std::cout << messageJson << std::endl;
                        // root and reader
                        Json::Value root;
@@ -44,11 +44,26 @@ int main()
                            std::cerr << e.what() << '\n';
                        }
 
-                       // getting the data event
-                       const std::string id = root["_id"].asString();
-                       const std::string status = root["online"].asString();
-                       
+                        // getting the data event
+                        const std::string id = root["_id"].asString();
+                        const std::string status = root["online"].asString();
+
+                        bool online;
+                        if (status == "true")
+                        {
+                           online = true;
+                        }
+                        else
+                        {
+                           online = false;
+                        }
+                        
+                        Device* device = new Device(id,online);
+                        simulator->addDevice(id, *device);
                         channel.ack(deliveryTag);
+
+
+                        
                    })
         .onData([](const char *data, size_t size) {})
         .onSuccess([](const std::string &consumertag)

@@ -28,7 +28,6 @@ const sensorsController = {
     },
     updateSensor: async (req,res) => {
         const updatedSensor = req.body;
-        console.log(updatedSensor);
         const sensor = await sensorsService.getSensorById(req.params.id);
         if (updatedSensor) {
             sensor.online = updatedSensor['online'] || sensor.online;
@@ -38,10 +37,16 @@ const sensorsController = {
             if(statusChanged) {
                 const messageQueueChannel = await channel;
                 const result = await messageQueueChannel.assertQueue(QUEUE_NAME);
-                messageQueueChannel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(updatedSensor)));
+                const command = {
+                    command:updatedSensor.online ? "STOP":"START",
+                    payload : {
+                        ...updatedSensor
+                    }
+                }
+                messageQueueChannel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(command)));
                 messageQueueChannel.checkQueue(QUEUE_NAME).catch((err) => {
                     console.error(err);
-                })
+                });
             } 
             return res.status(201).send(sensor);
         }  

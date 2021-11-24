@@ -7,7 +7,6 @@ using namespace std;
 class Simulator {
     private:
         map<string,Device> devices;
-        std::thread runners[];
     public:
         Simulator();
         ~Simulator();
@@ -17,6 +16,7 @@ class Simulator {
         void setDevice(map<string,Device> devices);
 
         void addDevice(string id, Device device);
+        void removeDevice(string id);
 
         Device getDevice(string id);
 };

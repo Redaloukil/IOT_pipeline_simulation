@@ -10,12 +10,12 @@ map<string,Device> Simulator::getDevices()
         return this->devices;
     }
 
-void Simulator::setDevice(map<string,Device> devices)
+    void Simulator::setDevice(map<string,Device> devices)
     {
         this->devices = devices;
     }
 
-void Simulator::addDevice(string id, Device device)
+    void Simulator::addDevice(string id, Device device)
     {
         auto itr = this->devices.find(id);
         if (itr == this->devices.end())
@@ -28,7 +28,11 @@ void Simulator::addDevice(string id, Device device)
         }
     }
 
-Device Simulator::getDevice(string id) {
+    void Simulator::removeDevice(string id){
+        this->devices.erase(id);
+    }
+
+    Device Simulator::getDevice(string id) {
         auto itr = this->devices.find(id);
         if (itr != this->devices.end())
         {
@@ -36,6 +40,6 @@ Device Simulator::getDevice(string id) {
         }
     }
 
-Simulator::Simulator() {
-    this->devices = {};
-}
+    Simulator::Simulator() {
+        //
+    }
