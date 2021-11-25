@@ -33,16 +33,20 @@ const sensorsController = {
             sensor.online = updatedSensor['online'] || sensor.online;
             sensor.name = updatedSensor['name'] || sensor.name;
             let statusChanged = updatedSensor.online !== sensor.online;
+
             await sensor.save();
+
             if(statusChanged) {
                 const messageQueueChannel = await channel;
                 const result = await messageQueueChannel.assertQueue(QUEUE_NAME);
+                
                 const command = {
-                    command:updatedSensor.online ? "STOP":"START",
+                    command:updatedSensor.online === "true" ? "START":"STOP",
                     payload : {
                         ...updatedSensor
                     }
                 }
+                
                 messageQueueChannel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(command)));
                 messageQueueChannel.checkQueue(QUEUE_NAME).catch((err) => {
                     console.error(err);
@@ -54,7 +58,6 @@ const sensorsController = {
     },
     deleteSensor: async (req,res) => {
         const deleted = await sensorsService.deleteSensoryId(req.params.id);
-        console.log(req.params.id);
         if(deleted) {
             return res.status(204).send({message:"Ressouce succefully deleted"});
         }

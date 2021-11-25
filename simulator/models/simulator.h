@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 #include <thread>
+#include <unistd.h>
+
 #include "device.h"
 
 using namespace std;
@@ -17,6 +19,8 @@ class Simulator {
 
         void addDevice(string id, Device device);
         void removeDevice(string id);
+
+        void runSimulator();
 
         Device getDevice(string id);
 };

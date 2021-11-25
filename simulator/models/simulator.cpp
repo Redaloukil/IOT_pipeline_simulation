@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 #include <pthread.h>
 #include "simulator.h"
+#include <unistd.h>
+
 
 using namespace std;
 
@@ -29,7 +31,12 @@ map<string,Device> Simulator::getDevices()
     }
 
     void Simulator::removeDevice(string id){
-        this->devices.erase(id);
+        try {
+            this->devices.erase(id);
+        } catch (...) {
+            throw;
+        }
+        
     }
 
     Device Simulator::getDevice(string id) {
@@ -40,6 +47,19 @@ map<string,Device> Simulator::getDevices()
         }
     }
 
+    void Simulator::runSimulator(){
+        bool run = true;
+
+        cout << "Number of devices" << this->devices.size() << endl;
+        for(;;) {
+
+                cout << "Number of devices" << this->devices.size() << endl;
+                
+                sleep(2);
+        }
+
+    }
+
     Simulator::Simulator() {
-        //
+        delete &devices;
     }
