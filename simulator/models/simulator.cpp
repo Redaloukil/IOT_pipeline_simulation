@@ -2,12 +2,10 @@
 #include <pthread.h>
 #include "simulator.h"
 #include <unistd.h>
-
+#include <typeinfo>
 
 using namespace std;
-
-
-map<string,Device> Simulator::getDevices()
+    map<string,Device> Simulator::getDevices()
     {
         return this->devices;
     }
@@ -17,26 +15,29 @@ map<string,Device> Simulator::getDevices()
         this->devices = devices;
     }
 
-    void Simulator::addDevice(string id, Device device)
+    void Simulator::addDevice(string id, Device* device)
     {
-        auto itr = this->devices.find(id);
-        if (itr == this->devices.end())
-        {
-            this->devices.insert({id, device});
-        }
-        else
-        {
+        if (devices.find(id) == devices.end()) {
+            cout << "Insert device with id" << id << std::endl;
+            cout << "Insert device with id" << device->getId() << " " << device->getOnline() << std::endl;
+            try {
+                devices.insert(make_pair(id, *device));
+            } catch(...) {
+                throw;
+            }
+            
+        } else {
             std::cout << "device already exists in device" << endl;
         }
     }
 
     void Simulator::removeDevice(string id){
+        cout << "remove device" << std::endl;
         try {
             this->devices.erase(id);
         } catch (...) {
             throw;
         }
-        
     }
 
     Device Simulator::getDevice(string id) {
@@ -49,13 +50,9 @@ map<string,Device> Simulator::getDevices()
 
     void Simulator::runSimulator(){
         bool run = true;
-
-        cout << "Number of devices" << this->devices.size() << endl;
         for(;;) {
-
-                cout << "Number of devices" << this->devices.size() << endl;
-                
-                sleep(2);
+            cout << "Number of devices" << this->devices.size() << endl;
+            sleep(2);
         }
 
     }

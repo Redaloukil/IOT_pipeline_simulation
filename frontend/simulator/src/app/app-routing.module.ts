@@ -5,11 +5,6 @@ import { GuestGuard } from 'src/helpers/guards/guest.guard';
 
 const routes: Routes = [
   {
-    path:"dashboard",
-    loadChildren:() => import('../pages/dashboard/dashboard.module').then((mod) => mod.DashboardModule),
-    canActivate:[AuthGuard],
-  },
-  {
     path:"login",
     loadChildren: () => import('../pages/login/login.module').then((mod) => mod.LoginModule), 
     canActivate:[GuestGuard],
@@ -18,6 +13,11 @@ const routes: Routes = [
     path:"signup",
     loadChildren: () => import('../pages/signup/signup.module').then((mod) => mod.SignupModule),
     canActivate:[GuestGuard]
+  },
+  {
+    path:"dashboard",
+    loadChildren:() => import('../pages/dashboard/dashboard.module').then((mod) => mod.DashboardModule),
+    canActivate:[AuthGuard],
   },
 ];
 

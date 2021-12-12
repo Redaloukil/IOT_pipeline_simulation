@@ -1,29 +1,35 @@
-<div>
+<div class="signup-form">
     <h1>Signup</h1>
     <form [formGroup]="signupForm">
-        <div>
+        <div class="form-field">
             <label>Username</label>
-            <mat-form-field [appearance]="'outline'">
-                <input matInput formControlName="username" type="text">
+            <mat-form-field class="full-width" [appearance]="'outline'">
+                <input matInput formControlName="username" type="text" placeholder="Ex : my username">
             </mat-form-field>
+            <mat-error *ngIf="!!signupForm.get('username')?.valid">
+                Please provide a valid email address
+            </mat-error>
         </div>
-        
-        <div>
+        <div class="form-field">
             <label>Password</label>
-            <mat-form-field [appearance]="'outline'">
-                <input matInput formControlName="password" type="text">
+            <mat-form-field class="full-width" [appearance]="'outline'">
+                <input matInput formControlName="password" type="text" placeholder="Password">
             </mat-form-field>
+            <mat-error *ngIf="!!signupForm.get('password')?.valid">
+                Please provide a valid email address
+            </mat-error>
         </div>
-        
-        <div>
+        <div class="form-field">
             <label>Confirm password</label>
-            <mat-form-field [appearance]="'outline'">
-                <input matInput formControlName="confirmPassword" type="text">
+            <mat-form-field class="full-width" [appearance]="'outline'">
+                <input matInput formControlName="confirmPassword" type="text" placeholder="Confirm password">
             </mat-form-field>
+            <mat-error *ngIf="!!signupForm.get('confirmPassword')?.valid">
+                Please provide a valid email address
+            </mat-error>
         </div>
-        
-        <div>
-            <button mat-flat-button color="accent" type="button" (click)="submit()" [disabled]="!signupForm.valid">Submit</button>
+        <div class="form-action-button">
+            <button mat-flat-button class="full-width" color="accent" type="button" (click)="submit()" [disabled]="!signupForm.valid">Submit</button>
         </div>
     </form>
 </div>

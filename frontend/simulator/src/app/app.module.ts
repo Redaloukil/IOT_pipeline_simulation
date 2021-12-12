@@ -17,6 +17,7 @@ import { JwtInterceptor } from 'src/helpers/jwt-injector';
 
 import { CommonModule } from '@angular/common';
 import { NavbarModule } from './components/navbar/navbar.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NavbarModule } from './components/navbar/navbar.module';
     StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,
     }),
+    NgbModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

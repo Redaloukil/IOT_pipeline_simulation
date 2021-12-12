@@ -1,5 +1,5 @@
 import { Route } from "@angular/compiler/src/core";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { User } from "src/models/user.model";
@@ -8,7 +8,8 @@ import { AuthService } from "src/services/auth.service";
 @Component({
     selector:'app-signup',
     templateUrl:'signup.component.html',
-    styleUrls:['signup.component.scss']
+    styleUrls:['signup.component.scss'],
+    encapsulation:ViewEncapsulation.None
 })
 
 export class SignupComponent implements OnInit {
@@ -30,19 +31,19 @@ export class SignupComponent implements OnInit {
         //
     }
 
-    ngOnInit(){
+    ngOnInit():void{
         //
     }
 
 
-    submit(){
+    submit():void{
         if(this.signupForm.get('password') === this.signupForm.get('confirmPassword')) {
             return;
         }
 
         this.authService.signup(this.signupForm.getRawValue())
             .toPromise()
-            .then((res) => {
+            .then(() => {
                 this.router.navigate(['login']);
             })
             .catch((err) => {

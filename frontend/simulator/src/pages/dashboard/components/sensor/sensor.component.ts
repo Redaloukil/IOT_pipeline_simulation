@@ -3,6 +3,7 @@ import { DashboardService } from "src/services/dashboard.service";
 
 @Component({
     selector:'app-sensor',
+    styleUrls:['sensor.component.scss'],
     templateUrl:'sensor.component.html'
 })
 

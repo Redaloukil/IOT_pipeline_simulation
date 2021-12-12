@@ -1,0 +1,10 @@
+@import '~src/styles/forms';
+
+.login-form {
+    width: 40%;
+    margin: auto;
+    
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+}

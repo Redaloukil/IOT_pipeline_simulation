@@ -5,44 +5,48 @@
 #include "models/simulator.h"
 #include "models/device.h"
 #include "handler.cpp"
+#include <typeinfo>
 
 using namespace std;
 
+void simulator_thread(map<string,Device> *devices){
+    bool run = true;
+
+    for(;;) {
+        for (std::map<string,Device>::iterator iter = devices->begin(); iter != devices->end();iter++) {
+            std::cout << iter->first << " => " << iter->second.getId() << '\n';
+        }
+        sleep(2);
+    }
+}
+
 int main()
 {
+    std::mutex mutex;
     auto *loop = uv_default_loop();
 
+    map<string,Device> devices;
     MyHandler handler(loop);
 
     AMQP::TcpConnection connection(&handler, AMQP::Address("amqp://guest:guest@localhost/"));
-
     AMQP::TcpChannel channel(&connection);
 
     std::string queue_name = "sensor_control";
-
-    Simulator *simulator = new Simulator();
-
-    std::thread t(&Simulator::runSimulator, simulator);
+    std::thread t(simulator_thread, &devices);
     
     channel.consume(queue_name)
-        .onMessage([&channel, &simulator](const AMQP::Message &message, uint64_t deliveryTag, bool redelivered)
+        .onMessage([&channel, &devices, &mutex ](const AMQP::Message &message, uint64_t deliveryTag, bool redelivered)
                    {
-                        // get amqp message body  
+                        // get amqp message body
                         std::string messageBody = message.body();
-                        
                         // extract message json from body
                         const std::string messageJson = messageBody.substr(0, messageBody.find('}') + 1);
-                        
-                        // cout received message
-                        std::cout << "message received" << std::endl;
-                        
                         // cout message json
                         std::cout << messageJson << std::endl;
-                        
                         // root and reader
                         Json::Value root;
                         Json::Reader reader;
-
+                        
                         try
                         {
                             reader.parse(messageJson, root);
@@ -50,14 +54,15 @@ int main()
                         catch (const Json::LogicError &e)
                         {
                             std::cerr << e.what() << '\n';
-                        }    
+                        }
                         
                         // getting the data event
-                        const std::string command = root["command"].asString();
-                        const std::string id = root["_id"].asString();
-                        const std::string status = root["online"].asString();
+                        std::string command = root["command"].asString();
+                        std::string id = root["payload"]["_id"].asString();
+                        std::string status = root["payload"]["online"].asString();
 
                         bool online;
+
                         if (status == "true")
                         {
                            online = true;
@@ -68,28 +73,49 @@ int main()
                         }
                         
                         if(command == "STOP"){
-                            simulator->removeDevice(id);
-                        }else { 
-                            Device* device = new Device(id,online);
-                            simulator->addDevice(id, *device);
-                        
-                            simulator->addDevice(id,*device);
+                            try {
+                                devices.erase(id);
+                            } catch (...) {
+                                throw;
+                            }
+                        }else if (command == "START") {
+                            Device* device = new Device(id,false);
+                            cout << "added device id :" << id << " status " << online << endl;
+                            if (devices.find(id) == devices.end()) {
+                                cout << "Insert device with id" << id << std::endl;
+                                cout << "Insert device with id" << device->getId() << " " << device->getOnline() << std::endl;
+                                try {
+                                    devices.insert(make_pair(id, *device));
+                                } catch(...) {
+                                    throw;
+                                }
+                            } else {
+                                std::cout << "device already exists in device" << endl;
+                            }
+                            devices.insert(make_pair(id,*device));
                         }
-
-                        
+                        cout << "Number of devices" << devices.size() << endl;
                         channel.ack(deliveryTag);
                     })
-        .onData([](const char *data, size_t size) {})
-        .onSuccess([](const std::string &consumertag)
-                   { 
-                       std::cout << "consume operation started " << consumertag << std::endl; 
-                    
-                   })
-        .onError([](const std::string message)
-                 { std::cout << "consume operation stopped" << std::endl; });
-
-    // run the loop
+                    .onData([](const char *data, size_t size) {
+                        
+                    })
+                    .onSuccess([](const std::string &consumertag)
+                            { 
+                                std::cout << "consume operation started " << consumertag << std::endl; 
+                            })
+                    .onError([](const std::string message)
+                            { 
+                                std::cout << "consume operation stopped" << std::endl; 
+                            })
+                    .onFinalize([]() 
+                        { 
+                            std::cout << "listening process stopped" << std::endl; 
+                        });
+   
     uv_run(loop, UV_RUN_DEFAULT);
-    // done
+    
+    t.join();
+
     return 0;
 }

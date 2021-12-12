@@ -8,19 +8,18 @@ import { User } from "src/models/user.model";
 })
 
 export class AuthService {
-    private apiURL = environment.apiUrl;
-    private user:User | null = null;
     
-    private options = {
-        headers: new HttpHeaders().set('Content-Type', 'application/json')
-    };
-
     constructor(private httpClient:HttpClient){
         if(localStorage.getItem('currentUser')) {
             this.user = JSON.parse(localStorage.getItem('currentUser') as string) as User; 
         }
-
     }
+
+    private apiURL = environment.apiUrl;
+    private user:User | null = null;
+    private options = {
+        headers: new HttpHeaders().set('Content-Type', 'application/json')
+    };
 
     getUser(){
         return this.user;

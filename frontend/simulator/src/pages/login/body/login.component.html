@@ -1,31 +1,26 @@
-<mat-card>
-    <mat-card-content>
+<div class="login-form">
     <h1>Login</h1>
     <form [formGroup]="loginForm">
-        <mat-error>
-            The username and password were not recognized
-        </mat-error>
-        <div>
-            <label>Username</label>
-            <mat-form-field [appearance]="'outline'">
-                <input matInput formControlName="username" type="text">
-            </mat-form-field>
-            <mat-error>
-                Please provide a valid email address
-            </mat-error>
-        </div>
-        <div>
-            <label>Password</label>
-            <mat-form-field [appearance]="'outline'">
-                <input matInput formControlName="password" type="password">
-            </mat-form-field>
-            <mat-error>
-                Please provide a valid email address
-            </mat-error>
-        </div>
-        <div>
-            <button mat-flat-button color="accent" type="button" (click)="submit()">Submit</button>
-        </div>
+            <div class="form-field">
+                <label>Username</label>
+                <mat-form-field class="full-width" [appearance]="'outline'">
+                    <input matInput formControlName="username" type="text" placeholder="Ex : my username">
+                </mat-form-field>
+                <mat-error *ngIf="!(!!loginForm.get('username')?.valid)">
+                    Please provide a valid email address
+                </mat-error>
+            </div>
+            <div class="form-field">
+                <label>Password</label>
+                <mat-form-field class="full-width" [appearance]="'outline'">
+                    <input matInput formControlName="password" type="password" placeholder="Password">
+                </mat-form-field>
+                <mat-error *ngIf="!(!!loginForm.get('password')?.valid)">
+                    Please provide a valid email address
+                </mat-error>
+            </div>
+            <div class="form-action-button">
+                <button mat-flat-button class="full-width" color="accent" type="button" (click)="submit()">Submit</button>
+            </div>
     </form>
-    </mat-card-content>
-</mat-card>
+</div>

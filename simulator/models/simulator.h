@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 class Simulator {
     private:
         map<string,Device> devices;
@@ -17,7 +18,7 @@ class Simulator {
 
         void setDevice(map<string,Device> devices);
 
-        void addDevice(string id, Device device);
+        void addDevice(string id, Device *device);
         void removeDevice(string id);
 
         void runSimulator();

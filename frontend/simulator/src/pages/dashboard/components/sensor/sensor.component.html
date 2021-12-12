@@ -1,14 +1,15 @@
-<div>
-    <p>
-        <strong>Name :</strong> {{sensor?.name}}
-    </p>
-    <p>
-        <strong>Status :</strong> {{sensor?.online ? "active" : "inactive"}}
-    </p>
-    <button (click)="changeStatus()">
-        Change status
-    </button>
-    <button (click)="deleteSensor()">
-        Delete sensor
-    </button>
-</div>
+    <mat-card class="full-width">
+        <mat-card-title>
+            <strong>Name :</strong> {{sensor?.name}}
+        </mat-card-title>
+        <mat-card-content>
+            <strong>Status :</strong> {{sensor?.online ? "active" : "inactive"}}
+        </mat-card-content>
+    
+        <button mat-flat-button color="primary" (click)="changeStatus()">
+            Change status
+        </button>
+        <button mat-stroked-button color="secondary"  (click)="deleteSensor()">
+            Delete sensor
+        </button>
+    </mat-card>
