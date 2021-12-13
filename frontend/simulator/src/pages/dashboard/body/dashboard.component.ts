@@ -1,11 +1,14 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/services/auth.service";
 import { DashboardService } from "../../../services/dashboard.service";
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateSensorDialogComponent } from "../components/create-sensor-dialog/create-sensor-dialog.component";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { Sensor } from "src/models/sensor.model";
+import { debounceTime } from "rxjs/operators";
 
 @Component({
     selector:'app-dashboard',
@@ -16,9 +19,14 @@ import { CreateSensorDialogComponent } from "../components/create-sensor-dialog/
 export class DashboardComponent implements OnInit{
     subscription:Subscription = new Subscription();
     loading = false;
-    sensors:any= [];
+    initialSensorsList:Sensor[]= [];
+    sensors:Sensor[] = this.initialSensorsList;
 
-    constructor(private dashboardService:DashboardService, private authService:AuthService, private router:Router, private dialog: MatDialog){
+    deviceSearch:FormGroup = this.formBuilder.group({
+        device:[''],
+    })
+
+    constructor(private formBuilder:FormBuilder, private dashboardService:DashboardService, private authService:AuthService, private router:Router, private dialog: MatDialog){
         //
     }
 
@@ -26,20 +34,29 @@ export class DashboardComponent implements OnInit{
         this.loading = true
         this.dashboardService.getSensors().toPromise()
             .then((sensors) => {
-                this.sensors = sensors;
+                this.sensors = this.initialSensorsList =  sensors as Sensor[];
             }).catch(() => {
                 //
             }).
             finally(() => {
                 this.loading = false;
             });
+        
+        this.deviceSearch.get('device')?.valueChanges.pipe(debounceTime(500)).subscribe((device) =>  {
+            if(device) {
+                this.sensors = this.initialSensorsList.filter((sensor) => sensor.name.includes(device));
+                return;
+            }
+            this.sensors = this.initialSensorsList;
+        })
     }
 
     relaod(){
         this.loading = true
         this.dashboardService.getSensors().toPromise()
             .then((sensors) => {
-                this.sensors = sensors;
+                this.initialSensorsList = sensors as Sensor[];
+                this.sensors = (sensors as Sensor[]).filter((sensor) => sensor.name.includes(this.deviceSearch.get('device')?.value));
             }).catch(() => {
                 //
             }).

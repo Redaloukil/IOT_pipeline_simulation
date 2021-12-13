@@ -2,16 +2,17 @@
 #include <amqpcpp/libuv.h>
 #include <jsoncpp/json/json.h>
 #include <thread>
+
 #include "models/simulator.h"
 #include "models/device.h"
 #include "handler.cpp"
-#include <typeinfo>
 
 using namespace std;
 
 void simulator_thread(map<string,Device> *devices){
     bool run = true;
 
+    // for each device that start running, generate a random number and publish it in the queue
     for(;;) {
         for (std::map<string,Device>::iterator iter = devices->begin(); iter != devices->end();iter++) {
             std::cout << iter->first << " => " << iter->second.getId() << '\n';

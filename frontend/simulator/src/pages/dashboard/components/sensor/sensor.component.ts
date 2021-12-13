@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Sensor } from "src/models/sensor.model";
 import { DashboardService } from "src/services/dashboard.service";
 
 @Component({
@@ -8,7 +9,7 @@ import { DashboardService } from "src/services/dashboard.service";
 })
 
 export class SensorComponent implements OnInit{
-    @Input() sensor:{_id:string,name:string,status:boolean,online:boolean} | null = null;
+    @Input() sensor:Sensor | null = null;
     @Output() reload:EventEmitter<void> = new EventEmitter();
 
     constructor(private dashboardService:DashboardService){
@@ -26,7 +27,7 @@ export class SensorComponent implements OnInit{
         })
         .toPromise()
         .then((sensor) => {
-            this.sensor = sensor as {_id:string,name:string,status:boolean;online:boolean};
+            this.sensor = sensor as Sensor;
             this.reload.emit();
         })
         .catch(() => {

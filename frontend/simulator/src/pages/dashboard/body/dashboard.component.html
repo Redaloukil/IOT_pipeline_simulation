@@ -1,24 +1,36 @@
 <div class="container">
-    <h1>dashboard</h1>
-    <button mat-flat-button color="primary" (click)="createSensor()">Create a sesnor</button>
-    <ng-container *ngIf="!loading">
-        <ng-container *ngIf="sensors">
-            <ng-container *ngIf="sensors.length > 0; else noSensors">
-                <div id="device-list" class="container">
-                    <div class="row">
-                        <ng-container *ngFor="let sensor of sensors">
-                            <div class="col-4">
-                                <app-sensor [sensor]="sensor" (reload)="relaod()"></app-sensor>
-                            </div>
-                        </ng-container>
+    <div class="top-bar">
+        <h1 class="top-bar-title">dashboard</h1>
+        <button class="top-bar-button" mat-flat-button color="primary" (click)="createSensor()">Create a sesnor</button>
+    </div>
+    <div class="">
+        <form action="" [formGroup]="deviceSearch">
+            <label for="device">Device search</label>
+            <mat-form-field appearance="outline" class="full-width">
+                <input matInput placeholder="Ex: my device 1" type="text" formControlName="device">
+            </mat-form-field>
+        </form>
+    </div>
+    <div>
+        <ng-container *ngIf="!loading">
+            <ng-container *ngIf="sensors">
+                <ng-container *ngIf="sensors.length > 0; else noSensors">
+                    <div id="device-list" class="container">
+                        <div class="row">
+                            <ng-container *ngFor="let sensor of sensors">
+                                <div class="col-4">
+                                    <app-sensor [sensor]="sensor" (reload)="relaod()"></app-sensor>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
-                    
-                </div>
+                </ng-container>
+                <ng-template #noSensors>
+                    no sensors available
+                </ng-template>
             </ng-container>
-            <ng-template #noSensors>
-                no sensors available
-            </ng-template>
         </ng-container>
-    </ng-container>
+    </div>
+    
 
 </div>

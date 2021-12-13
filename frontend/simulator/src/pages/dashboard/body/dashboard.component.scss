@@ -6,3 +6,21 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.top-bar {
+    padding: 20px 0;
+    display: flex;
+    &-button {
+        flex: 1;
+        flex-direction: row-reverse;
+    }
+
+    &-title {
+        flex: 7;
+    }
+}
+
+label {
+    font-weight: 700;
+    margin-bottom: 0;
+}

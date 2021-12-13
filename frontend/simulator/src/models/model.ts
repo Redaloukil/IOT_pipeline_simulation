@@ -1,5 +1,5 @@
 export abstract class Model {
-    id:string;
+    _id:string;
     createdAt:string;
     updateAt:string;
 } 
