@@ -9,13 +9,14 @@
 
 using namespace std;
 
-void simulator_thread(map<string,Device> *devices){
+void simulator_thread(map<string,Device> *devices, AMQP::TcpConnection* connection){
     bool run = true;
+    AMQP::TcpChannel channel(connection);
 
-    // for each device that start running, generate a random number and publish it in the queue
     for(;;) {
         for (std::map<string,Device>::iterator iter = devices->begin(); iter != devices->end();iter++) {
             std::cout << iter->first << " => " << iter->second.getId() << '\n';
+            channel.publish("", "sensor_data",iter->second.getId());
         }
         sleep(2);
     }
@@ -33,9 +34,10 @@ int main()
     AMQP::TcpChannel channel(&connection);
 
     std::string queue_name = "sensor_control";
-    std::thread t(simulator_thread, &devices);
+    std::thread t(simulator_thread, &devices, &connection);
     
-    channel.consume(queue_name)
+    channel
+        .consume(queue_name)
         .onMessage([&channel, &devices, &mutex ](const AMQP::Message &message, uint64_t deliveryTag, bool redelivered)
                    {
                         // get amqp message body
@@ -64,12 +66,9 @@ int main()
 
                         bool online;
 
-                        if (status == "true")
-                        {
+                        if (status == "true") {
                            online = true;
-                        }
-                        else
-                        {
+                        } else {
                            online = false;
                         }
                         
@@ -81,9 +80,7 @@ int main()
                             }
                         }else if (command == "START") {
                             Device* device = new Device(id,false);
-                            cout << "added device id :" << id << " status " << online << endl;
                             if (devices.find(id) == devices.end()) {
-                                cout << "Insert device with id" << id << std::endl;
                                 cout << "Insert device with id" << device->getId() << " " << device->getOnline() << std::endl;
                                 try {
                                     devices.insert(make_pair(id, *device));
@@ -98,24 +95,24 @@ int main()
                         cout << "Number of devices" << devices.size() << endl;
                         channel.ack(deliveryTag);
                     })
-                    .onData([](const char *data, size_t size) {
-                        
-                    })
+                    .onData([](const char *data, size_t size) 
+                        {
+                            //
+                        })
                     .onSuccess([](const std::string &consumertag)
-                            { 
-                                std::cout << "consume operation started " << consumertag << std::endl; 
-                            })
+                        { 
+                            std::cout << "consume operation started " << consumertag << std::endl; 
+                        })
                     .onError([](const std::string message)
-                            { 
-                                std::cout << "consume operation stopped" << std::endl; 
-                            })
+                        { 
+                            std::cout << "consume operation stopped" << std::endl; 
+                        })
                     .onFinalize([]() 
                         { 
                             std::cout << "listening process stopped" << std::endl; 
                         });
    
     uv_run(loop, UV_RUN_DEFAULT);
-    
     t.join();
 
     return 0;

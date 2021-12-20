@@ -5,7 +5,7 @@ this file describes the simulation funtionalities, simuator execution will be de
 
 
 
-1 - class named Simulator 
+1 - Simulator 
     simulator has: 
     - name 
     - devices // saves the devices that are running on seperate 
@@ -18,4 +18,3 @@ this file describes the simulation funtionalities, simuator execution will be de
     command executor plays the role of executing command received from message broker 
 
 
-MessageInterpreter 
