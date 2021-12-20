@@ -18,21 +18,17 @@ using namespace std;
     void Simulator::addDevice(string id, Device* device)
     {
         if (devices.find(id) == devices.end()) {
-            cout << "Insert device with id" << id << std::endl;
-            cout << "Insert device with id" << device->getId() << " " << device->getOnline() << std::endl;
             try {
                 devices.insert(make_pair(id, *device));
             } catch(...) {
                 throw;
             }
-            
         } else {
             std::cout << "device already exists in device" << endl;
         }
     }
 
     void Simulator::removeDevice(string id){
-        cout << "remove device" << std::endl;
         try {
             this->devices.erase(id);
         } catch (...) {

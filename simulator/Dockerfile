@@ -1,6 +1,14 @@
-FROM ricejasonf/clang
-WORKDIR /usr/local/src
+FROM ubuntu:20.04
 
+COPY . /simulator
+
+WORKDIR /simulator 
+
+RUN apt-get update 
+
+RUN apt-get --no-install-recommends install -y software-properties-common cmake git 
+
+# amqp-cpp
 RUN git clone https://github.com/CopernicaMarketingSoftware/AMQP-CPP.git \
   && cd AMQP-CPP && mkdir build && cd build \
   && cmake \
@@ -23,3 +31,6 @@ RUN git clone https://github.com/open-source-parsers/jsoncpp.git \
   && make install \
   && mkdir /usr/local/include/jsoncpp \
   && cp -r /usr/local/include/json /usr/local/include/jsoncpp/
+
+
+
